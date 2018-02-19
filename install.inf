@@ -96,13 +96,9 @@ section=commands
 caption=Color Text\Clear all styles
 method=clear_all
 
-[item19]
-section=commands
-caption=Color Text\-
-method=_
-
 [item20]
 section=commands
-caption=Color Text\Edit styles
+caption=Color Text\Config
 method=edit
+menu=o
 
