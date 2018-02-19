@@ -28,6 +28,7 @@ TAG_UNIQ   = 12345
 #--------------
 
 def is_word(s):
+    if not s: return False
     for ch in s:
         if not ch in CHARS: return False
     return True
