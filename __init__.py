@@ -35,6 +35,7 @@ def is_word(s):
 
 def get_word(x, y):
     s = ed.get_text_line(y)
+    if not s: return
     if x>=len(s): return
 
     x0 = x
@@ -45,19 +46,17 @@ def get_word(x, y):
     while (x1<len(s)) and is_word(s[x1]):
         x1 += 1
 
-    return ed.get_text_substr(x0, y, x1, y)
+    return s[x0:x1]
 
-  
 def _curent_word():
+    if ed.get_sel_mode() != SEL_NORMAL: return
     s = ed.get_text_sel()
-    nlen = len(s)
-    if nlen <= 0:
-        carets = ed.get_carets()
-        if len(carets)!=1: return
-        x0, y0, x1, y1 = carets[0]
-        return get_word(x0, y0)
-    else:
-        return ed.get_text_sel()
+    if s: return s
+
+    carets = ed.get_carets()
+    if len(carets)!=1: return
+    x0, y0, x1, y1 = carets[0]
+    return get_word(x0, y0)
 
 
 def do_find_all(ed, text):
