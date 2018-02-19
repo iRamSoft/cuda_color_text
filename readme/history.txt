@@ -1,2 +1,2 @@
-0.1.0
-Copy from syn_color_text
+2018.02.19
+Initial version
