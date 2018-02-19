@@ -14,8 +14,8 @@ unicode_letters = ''.join(c for c in all_unicode
 
 CHARS = string.ascii_letters + string.digits + '_' + unicode_letters
 
-if app_api_version()<'1.0.214':
-    msg_box(MSG_ERROR, 'Plugin needs newer CudaText')
+#if app_api_version()<'1.0.214':
+#   msg_box(MSG_ERROR, 'Plugin needs newer CudaText')
 
 if os.path.isfile(ini0) and not os.path.isfile(ini):
     shutil.copyfile(ini0, ini)
