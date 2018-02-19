@@ -14,9 +14,6 @@ unicode_letters = ''.join(c for c in all_unicode
 
 CHARS = string.ascii_letters + string.digits + '_' + unicode_letters
 
-#if app_api_version()<'1.0.214':
-#   msg_box(MSG_ERROR, 'Plugin needs newer CudaText')
-
 if os.path.isfile(ini0) and not os.path.isfile(ini):
     shutil.copyfile(ini0, ini)
 
@@ -172,7 +169,14 @@ class Command:
     def format_strikeout(self):
         set_text_attribute([TAG_UNIQ, COLOR_NONE, 0, 0, 1, 0, COLOR_NONE])
 
-    def clear_all(self): ed.attr(MARKERS_DELETE_ALL, 0)
+    def clear_all(self):
+        clear_style(0)
+        clear_style(1)
+        clear_style(2)
+        clear_style(3)
+        clear_style(4)
+        clear_style(5)
+        clear_style(6)
 
     def clear1(self): clear_style(1)
     def clear2(self): clear_style(2)
