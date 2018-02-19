@@ -4,6 +4,7 @@ desc=Allows to colorize text blocks, like Notepad++ "Style token"
 type=cudatext-plugin
 subdir=cuda_color_text
 api=1.0.214
+homepage=https://github.com/iRamSoft/cuda_color_text/
 
 [item1]
 section=commands
