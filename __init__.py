@@ -5,7 +5,7 @@ import string
 import unicodedata as ud
 from .colorcode import *
 
-ini = os.path.join(app_path(APP_DIR_EXE),'tools', 'settings', 'styles.ini')
+ini = os.path.join(app_path(APP_DIR_SETTINGS), 'styles.ini')
 ini0 = os.path.join(os.path.dirname(__file__), 'styles.sample.ini')
 
 all_unicode = ''.join(chr(i) for i in range(65536))
