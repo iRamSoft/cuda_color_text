@@ -1,0 +1,106 @@
+[info]
+title=Color Text
+desc=Allows to colorize text blocks, like Notepad++ "Style token"
+type=cudatext-plugin
+subdir=cudatext_color_text
+
+[item1]
+section=commands
+caption=Color Text\Apply style\Apply style 1\
+method=color1
+
+[item2]
+section=commands
+caption=Color Text\Apply style\Apply style 2\
+method=color2
+
+[item3]
+section=commands
+caption=Color Text\Apply style\Apply style 3\
+method=color3
+
+[item4]
+section=commands
+caption=Color Text\Apply style\Apply style 4\
+method=color4
+
+[item5]
+section=commands
+caption=Color Text\Apply style\Apply style 5\
+method=color5
+
+[item6]
+section=commands
+caption=Color Text\Apply style\Apply style 6\
+method=color6
+
+[item7]
+section=commands
+caption=Color Text\-
+method=_
+
+[item8]
+section=commands
+caption=Color Text\Apply bold\
+method=format_bold
+
+[item9]
+section=commands
+caption=Color Text\Apply italic\
+method=format_italic
+
+[item10]
+section=commands
+caption=Color Text\Apply strikeout\
+method=format_strikeout
+
+[item11]
+section=commands
+caption=Color Text\-
+method=_
+
+[item12]
+section=commands
+caption=Color Text\Clear selection styles\Clear style 1\
+method=clear1
+
+[item13]
+section=commands
+caption=Color Text\Clear selection styles\Clear style 2\
+method=clear2
+
+[item14]
+section=commands
+caption=Color Text\Clear selection styles\Clear style 3\
+method=clear3
+
+[item15]
+section=commands
+caption=Color Text\Clear selection styles\Clear style 4\
+method=clear4
+
+[item16]
+section=commands
+caption=Color Text\Clear selection styles\Clear style 5\
+method=clear5
+
+[item17]
+section=commands
+caption=Color Text\Clear selection styles\Clear style 6\
+method=clear6
+
+[item18]
+section=commands
+caption=Color Text\Clear all styles\
+method=clear_all
+
+[item19]
+section=commands
+caption=Color Text\-
+method=_
+
+[item20]
+section=commands
+caption=Color Text\Edit styles\
+method=edit
+
