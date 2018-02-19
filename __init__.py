@@ -33,20 +33,20 @@ def is_word(s):
     return True
 
 def get_word(x, y):
-    if x==0: return
+    s = ed.get_text_line(y)
+    if x>=len(s): return
 
     x0 = x
-    while (x0>0) and is_word(ed.get_text_substr(x0-1, y, x0, y)):
-        x0-=1
-    text1 = ed.get_text_substr(x0, y, x, y)
+    while (x0>0) and is_word(s[x0-1]):
+        x0 -= 1
 
-    x0 = x
-    while is_word(ed.get_text_substr(x0, y, x0+1, y)):
-        x0+=1
-    text2 = ed.get_text_substr(x, y, x0, y)
+    x1 = x
+    while (x1<len(s)) and is_word(s[x1]):
+        x1 += 1
 
-    return text1 + text2
+    return ed.get_text_substr(x0, y, x1, y)
 
+  
 def _curent_word():
     s = ed.get_text_sel()
     nlen = len(s)
