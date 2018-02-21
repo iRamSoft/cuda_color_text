@@ -63,32 +63,32 @@ method=_
 
 [item12]
 section=commands
-caption=Color Text\Clear selection styles\Clear style 1
+caption=Color Text\Clear styles\Clear style 1
 method=clear1
 
 [item13]
 section=commands
-caption=Color Text\Clear selection styles\Clear style 2
+caption=Color Text\Clear styles\Clear style 2
 method=clear2
 
 [item14]
 section=commands
-caption=Color Text\Clear selection styles\Clear style 3
+caption=Color Text\Clear styles\Clear style 3
 method=clear3
 
 [item15]
 section=commands
-caption=Color Text\Clear selection styles\Clear style 4
+caption=Color Text\Clear styles\Clear style 4
 method=clear4
 
 [item16]
 section=commands
-caption=Color Text\Clear selection styles\Clear style 5
+caption=Color Text\Clear styles\Clear style 5
 method=clear5
 
 [item17]
 section=commands
-caption=Color Text\Clear selection styles\Clear style 6
+caption=Color Text\Clear styles\Clear style 6
 method=clear6
 
 [item18]
