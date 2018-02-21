@@ -8,9 +8,8 @@ from .colorcode import *
 ini = os.path.join(app_path(APP_DIR_SETTINGS), 'styles.ini')
 ini0 = os.path.join(os.path.dirname(__file__), 'styles.sample.ini')
 
-all_unicode = ''.join(chr(i) for i in range(65536))
-unicode_letters = ''.join(c for c in all_unicode
-                          if ud.category(c)=='Lu' or ud.category(c)=='Ll')
+all_unicode = [chr(i) for i in range(0x10000)]
+unicode_letters = ''.join([c for c in all_unicode if ud.category(c) in ('Lu', 'Ll')])
 
 CHARS = string.ascii_letters + string.digits + '_' + unicode_letters
 
