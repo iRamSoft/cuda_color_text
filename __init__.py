@@ -17,10 +17,10 @@ if os.path.isfile(ini0) and not os.path.isfile(ini):
     shutil.copyfile(ini0, ini)
 
 #-------options
-ALL_WORDS      = ini_read(ini, 'op', 'all_words'      , '1')
-WHOLE_WORDS    = ini_read(ini, 'op', 'whole_words'    , '0')
-WORDS_ONLY     = ini_read(ini, 'op', 'words_only'     , '0')
-CASE_SENSITIVE = ini_read(ini, 'op', 'case_sensitive' , '0')
+opt_all_words    = ini_read(ini, 'op', 'all_words'      , '1') == '1'
+opt_whole_words  = ini_read(ini, 'op', 'whole_words'    , '0') == '1'
+opt_words_only   = ini_read(ini, 'op', 'words_only'     , '0') == '1'
+opt_case_sens    = ini_read(ini, 'op', 'case_sensitive' , '0') == '1'
 #-----constants
 COLOR_FONT = 0x000000
 TAG_UNIQ   = 12345
@@ -59,7 +59,7 @@ def _curent_word():
 
 
 def do_find_all(ed, text):
-    if int(WORDS_ONLY)>0:
+    if opt_words_only:
         if not is_word(text): return
 
     res = []
@@ -67,7 +67,7 @@ def do_find_all(ed, text):
         line = ed.get_text_line(i)
         if not line: continue
 
-        if int(CASE_SENSITIVE)>0:
+        if not opt_case_sens:
             line = line.upper()
             text = text.upper()
 
@@ -76,7 +76,7 @@ def do_find_all(ed, text):
             n = line.find(text, n)
             if n<0: break
             allow = True
-            if int(WORDS_ONLY)>0:
+            if opt_words_only:
                 if n>0 and is_word(line[n-1]):
                     allow = False
                 if allow:
@@ -109,7 +109,7 @@ def set_text_attribute(attribs):
 
     if not word: return
 
-    if int(ALL_WORDS) > 0:
+    if opt_all_words:
         items = do_find_all(ed, word)
         for item in items:
             set_sel_attribute(item, len(word), attribs)
