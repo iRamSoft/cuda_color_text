@@ -114,11 +114,12 @@ def set_text_attribute(attribs):
         for item in items:
             set_sel_attribute(item, len(word), attribs)
     else:
+        carets = ed.get_carets()
+        if len(carets)!=1: return
         x0, y0, x1, y1 = carets[0]
-        if x0 > x1:
-            x0, x1 = x1, x0
-
-        set_sel_attribute([x0, y0], len(word), attribs)
+        if x0>x1: x0, x1 = x1, x0
+        if y0>y1: y0, y1 = y1, y0
+        set_sel_attribute([y0, x0], len(word), attribs)
 
 # attribs array:
 #[tag=n, color=COLOR_NONE, bold=0, italic=0, strikeout=0, border=0, color_border=COLOR_NONE]
