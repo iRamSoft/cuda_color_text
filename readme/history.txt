@@ -1,2 +1,7 @@
+
+2018.03.13
+* renamed ini-file to cuda_color_text.ini
+- small fixes
+
 2018.02.19
 Initial version
