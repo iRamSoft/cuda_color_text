@@ -5,7 +5,7 @@ import string
 import unicodedata as ud
 from .colorcode import *
 
-ini = os.path.join(app_path(APP_DIR_SETTINGS), 'styles.ini')
+ini = os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_color_text.ini')
 ini0 = os.path.join(os.path.dirname(__file__), 'styles.sample.ini')
 
 all_unicode = [chr(i) for i in range(0x10000)]
