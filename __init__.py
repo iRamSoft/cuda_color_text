@@ -5,7 +5,7 @@ import string
 import unicodedata as ud
 from .colorcode import *
 
-ini = os.path.join(app_path(APP_DIR_SETTINGS), 'styles.ini')
+ini = os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_color_text.ini')
 ini0 = os.path.join(os.path.dirname(__file__), 'styles.sample.ini')
 
 all_unicode = [chr(i) for i in range(0x10000)]
@@ -117,8 +117,9 @@ def set_text_attribute(attribs):
         carets = ed.get_carets()
         if len(carets)!=1: return
         x0, y0, x1, y1 = carets[0]
-        if x0>x1: x0, x1 = x1, x0
-        if y0>y1: y0, y1 = y1, y0
+        #sort pairs
+        if (y0, x0)>(y1, x1):
+            x0, y0, x1, y1 = x1, y1, x0, y0
         set_sel_attribute([y0, x0], len(word), attribs)
 
 # attribs array:
