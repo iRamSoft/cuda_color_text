@@ -76,7 +76,7 @@ def do_find_all(ed, text):
             n = line.find(text, n)
             if n<0: break
             allow = True
-            if opt_words_only:
+            if opt_whole_words:
                 if n>0 and is_word(line[n-1]):
                     allow = False
                 if allow:
@@ -186,4 +186,5 @@ class Command:
     def clear5(self): clear_style(5)
     def clear6(self): clear_style(6)
 
-    def edit(self): file_open(ini)
+    def config(self):
+        file_open(ini)

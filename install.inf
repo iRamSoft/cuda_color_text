@@ -8,32 +8,32 @@ homepage=https://github.com/iRamSoft/cuda_color_text/
 
 [item1]
 section=commands
-caption=Color Text\Apply style\Apply style 1
+caption=Color Text\Apply style 1
 method=color1
 
 [item2]
 section=commands
-caption=Color Text\Apply style\Apply style 2
+caption=Color Text\Apply style 2
 method=color2
 
 [item3]
 section=commands
-caption=Color Text\Apply style\Apply style 3
+caption=Color Text\Apply style 3
 method=color3
 
 [item4]
 section=commands
-caption=Color Text\Apply style\Apply style 4
+caption=Color Text\Apply style 4
 method=color4
 
 [item5]
 section=commands
-caption=Color Text\Apply style\Apply style 5
+caption=Color Text\Apply style 5
 method=color5
 
 [item6]
 section=commands
-caption=Color Text\Apply style\Apply style 6
+caption=Color Text\Apply style 6
 method=color6
 
 [item7]
@@ -63,32 +63,32 @@ method=_
 
 [item12]
 section=commands
-caption=Color Text\Clear styles\Clear style 1
+caption=Color Text\Clear style 1
 method=clear1
 
 [item13]
 section=commands
-caption=Color Text\Clear styles\Clear style 2
+caption=Color Text\Clear style 2
 method=clear2
 
 [item14]
 section=commands
-caption=Color Text\Clear styles\Clear style 3
+caption=Color Text\Clear style 3
 method=clear3
 
 [item15]
 section=commands
-caption=Color Text\Clear styles\Clear style 4
+caption=Color Text\Clear style 4
 method=clear4
 
 [item16]
 section=commands
-caption=Color Text\Clear styles\Clear style 5
+caption=Color Text\Clear style 5
 method=clear5
 
 [item17]
 section=commands
-caption=Color Text\Clear styles\Clear style 6
+caption=Color Text\Clear style 6
 method=clear6
 
 [item18]
@@ -99,6 +99,6 @@ method=clear_all
 [item20]
 section=commands
 caption=Color Text\Config
-method=edit
+method=config
 menu=o
 
