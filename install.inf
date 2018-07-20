@@ -1,6 +1,6 @@
 [info]
 title=Color Text
-desc=Allows to colorize text blocks, like Notepad++ "Style token"
+desc=Allows to colorize text fragments, like function "Style token" in Notepad++
 type=cudatext-plugin
 subdir=cuda_color_text
 api=1.0.214
