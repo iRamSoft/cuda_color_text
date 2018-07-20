@@ -17,9 +17,8 @@ if os.path.isfile(ini0) and not os.path.isfile(ini):
     shutil.copyfile(ini0, ini)
 
 #-------options
-opt_all_words    = ini_read(ini, 'op', 'all_words'      , '1') == '1'
+opt_all_words    = ini_read(ini, 'op', 'all_words'      , '0') == '1'
 opt_whole_words  = ini_read(ini, 'op', 'whole_words'    , '0') == '1'
-opt_words_only   = ini_read(ini, 'op', 'words_only'     , '0') == '1'
 opt_case_sens    = ini_read(ini, 'op', 'case_sensitive' , '0') == '1'
 #-----constants
 COLOR_FONT = 0x000000
@@ -59,8 +58,6 @@ def _curent_word():
 
 
 def do_find_all(ed, text):
-    if opt_words_only:
-        if not is_word(text): return
 
     res = []
     for i in range(ed.get_line_count()):
