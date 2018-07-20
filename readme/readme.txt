@@ -1,6 +1,7 @@
 Plugin for CudaText.
-Gives commands to colorize text fragments (usually words) with N styles (backgnd color + italic/bold/crossed).
-Changes selected text, without selection uses word under first caret.
+Gives commands to colorize text fragments with N styles (background color + italic/bold/crossed).
+It is like function "Style token" in Notepad++.
+Uses selected text, without selection uses word under first caret.
 
 Gives menu item in "Options/ Settings-plugins" to edit config file.
 Options:
