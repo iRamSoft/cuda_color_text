@@ -1,9 +1,9 @@
-from cudatext import *
 import os
 import shutil
 import string
 import unicodedata as ud
-from .colorcode import *
+from cudatext import *
+from cudax_lib import html_color_to_int
 
 ini = os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_color_text.ini')
 ini0 = os.path.join(os.path.dirname(__file__), 'styles.sample.ini')
@@ -137,11 +137,11 @@ def do_color(n):
 
     st = ini_read(ini, 'colors', str(n), '')
     if st:
-        color = HTMLColorToPILColor(st)
+        color = html_color_to_int(st)
 
     st = ini_read(ini, 'border_colors', str(n), '')
     if st:
-        color_border = HTMLColorToPILColor(st)
+        color_border = html_color_to_int(st)
 
     st = ini_read(ini, 'styles', str(n), '')
     if st:
