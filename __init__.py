@@ -23,8 +23,7 @@ opt_all_words    = ini_read(ini, 'op', 'all_words'      , '0') == '1'
 opt_whole_words  = ini_read(ini, 'op', 'whole_words'    , '0') == '1'
 opt_case_sens    = ini_read(ini, 'op', 'case_sensitive' , '0') == '1'
 #-----constants
-COLOR_FONT = 0x000000
-TAG_UNIQ   = 4000
+TAG_UNIQ   = 4000 # must be unique for all ed.attr() plugins
 TAG_MAX    = TAG_UNIQ + 10
 #--------------
 
@@ -100,9 +99,10 @@ def set_sel_attribute(ed, item, nlen, attribs):
     if border:
         b_l = b_r = b_d = b_u = 1
 
-    fcolor = COLOR_FONT
     if bold or italic or strikeout or border:
         fcolor = COLOR_NONE
+    else:
+        fcolor = ed.get_prop(PROP_COLOR, COLOR_ID_TextFont)
 
     ed.attr(MARKERS_ADD, tag, item[1], item[0], nlen, fcolor, color, color_border, bold, italic, strikeout, b_l, b_r, b_d, b_u)
 
