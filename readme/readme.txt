@@ -9,7 +9,7 @@ Options:
 - case_sensitive: Case sensitive search for other occurrences
 - whole_words: Colorize only those occurrences, which are whole words
 
-Now plugin also saves applied attribs to helper file (*.cuda-colortext) and restores attribs later on file opening.
+Now plugin also saves applied attribs to helper file (*.cuda-colortext) and restores attribs later on file opening. On applying attrib, plugin marks file as "modified", it is Ok, it's needed to save helper file.
 
 
 Authors:
