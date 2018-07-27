@@ -1,4 +1,5 @@
 import os
+import json
 import shutil
 import string
 import unicodedata as ud
@@ -12,6 +13,7 @@ all_unicode = [chr(i) for i in range(0x10000)]
 unicode_letters = ''.join([c for c in all_unicode if ud.category(c) in ('Lu', 'Ll')])
 
 CHARS = string.ascii_letters + string.digits + '_' + unicode_letters
+HELPER_EXT = '.cuda-colortext'
 
 if os.path.isfile(ini0) and not os.path.isfile(ini):
     shutil.copyfile(ini0, ini)
@@ -22,16 +24,19 @@ opt_whole_words  = ini_read(ini, 'op', 'whole_words'    , '0') == '1'
 opt_case_sens    = ini_read(ini, 'op', 'case_sensitive' , '0') == '1'
 #-----constants
 COLOR_FONT = 0x000000
-TAG_UNIQ   = 12345
+TAG_UNIQ   = 4000
+TAG_MAX    = TAG_UNIQ + 10
 #--------------
 
 def is_word(s):
+
     if not s: return False
     for ch in s:
         if not ch in CHARS: return False
     return True
 
-def get_word(x, y):
+def get_word(ed, x, y):
+
     s = ed.get_text_line(y)
     if not s: return
     if x>=len(s): return
@@ -46,7 +51,8 @@ def get_word(x, y):
 
     return s[x0:x1]
 
-def _curent_word():
+def _curent_word(ed):
+
     if ed.get_sel_mode() != SEL_NORMAL: return
     s = ed.get_text_sel()
     if s: return s
@@ -54,7 +60,7 @@ def _curent_word():
     carets = ed.get_carets()
     if len(carets)!=1: return
     x0, y0, x1, y1 = carets[0]
-    return get_word(x0, y0)
+    return get_word(ed, x0, y0)
 
 
 def do_find_all(ed, text):
@@ -85,7 +91,9 @@ def do_find_all(ed, text):
             n += len(text)
     return res
 
-def set_sel_attribute(item, nlen, attribs):
+
+def set_sel_attribute(ed, item, nlen, attribs):
+
     tag, color, bold, italic, strikeout, border, color_border = attribs
 
     b_l = b_r = b_d = b_u = 0
@@ -98,18 +106,21 @@ def set_sel_attribute(item, nlen, attribs):
 
     ed.attr(MARKERS_ADD, tag, item[1], item[0], nlen, fcolor, color, color_border, bold, italic, strikeout, b_l, b_r, b_d, b_u)
 
-def set_text_attribute(attribs):
-    word = _curent_word()
 
+def set_text_attribute(ed, attribs):
+
+    ed.set_prop(PROP_MODIFIED, True)
+    # need on_save call to save helper file
+
+    word = _curent_word(ed)
     if not word:
-        word = get_text_sel()
-
+        word = ed.get_text_sel()
     if not word: return
 
     if opt_all_words:
         items = do_find_all(ed, word)
         for item in items:
-            set_sel_attribute(item, len(word), attribs)
+            set_sel_attribute(ed, item, len(word), attribs)
     else:
         carets = ed.get_carets()
         if len(carets)!=1: return
@@ -117,12 +128,14 @@ def set_text_attribute(attribs):
         #sort pairs
         if (y0, x0)>(y1, x1):
             x0, y0, x1, y1 = x1, y1, x0, y0
-        set_sel_attribute([y0, x0], len(word), attribs)
+        set_sel_attribute(ed, [y0, x0], len(word), attribs)
 
 # attribs array:
 #[tag=n, color=COLOR_NONE, bold=0, italic=0, strikeout=0, border=0, color_border=COLOR_NONE]
 
-def do_color(n):
+
+def do_color(ed, n):
+
     ed.attr(MARKERS_DELETE_BY_TAG, TAG_UNIQ + n)
 
     color        = COLOR_NONE
@@ -147,41 +160,120 @@ def do_color(n):
         if 'u' in st: border    = 1 #attribs.extend([(ATTRIB_SET_UNDERLINE,0)])
         if 's' in st: strikeout = 1 #attribs.extend([(ATTRIB_SET_STRIKEOUT,0)])
 
-    set_text_attribute([TAG_UNIQ + n, color, bold, italic, strikeout, border, color_border])
+    set_text_attribute(ed, [TAG_UNIQ + n, color, bold, italic, strikeout, border, color_border])
 
-def clear_style(n):
+
+def clear_style(ed, n):
     ed.attr(MARKERS_DELETE_BY_TAG, TAG_UNIQ + n)
 
+
+def load_helper_file(ed):
+    
+    fn = ed.get_filename()
+    if not fn: return
+    
+    fn_res = fn + HELPER_EXT
+    if not os.path.isfile(fn_res):
+        return
+        
+    with open(fn_res, 'r') as f:
+        res = json.load(f)
+        
+    for r in res:
+        ed.attr(MARKERS_ADD,
+            tag = r['tag'],
+            x = r['x'],
+            y = r['y'],
+            len = r['len'],
+            color_font = r['c_font'],
+            color_bg = r['c_bg'],
+            color_border = r['c_border'],
+            font_bold = 1 if r['f_b'] else 0,
+            font_italic = 1 if r['f_i'] else 0,
+            font_strikeout = 1 if r['f_s'] else 0,
+            )
+            
+    print('Color Text: restored %d attribs for "%s"' % (len(res), os.path.basename(fn)))
+        
+
+def save_helper_file(ed):
+
+    fn = ed.get_filename()
+    if not fn: return
+    
+    fn_res = fn + HELPER_EXT
+    if os.path.isfile(fn_res):
+        os.remove(fn_res)
+    
+    marks = ed.attr(MARKERS_GET)
+    if not marks:
+        return
+    
+    res = []
+    for (tag, x, y, len,
+      color_font, color_bg, color_border,
+      font_bold, font_italic, font_strikeout,
+      border_left, border_right, border_down, border_up) in marks:
+        if TAG_UNIQ<=tag<=TAG_MAX: 
+            res.append({
+                'tag': tag,
+                'x': x,
+                'y': y,
+                'len': len,
+                'c_font': color_font,
+                'c_bg': color_bg,
+                'c_border': color_border,
+                'f_b': font_bold!=0,
+                'f_i': font_italic!=0,
+                'f_s': font_strikeout!=0,
+                })
+                
+    if not res:
+        return
+      
+    with open(fn_res, 'w') as f:
+        json.dump(res, fp=f, indent=2)
+    
+
 class Command:
-    def color1(self): do_color(1)
-    def color2(self): do_color(2)
-    def color3(self): do_color(3)
-    def color4(self): do_color(4)
-    def color5(self): do_color(5)
-    def color6(self): do_color(6)
+
+    def color1(self): do_color(ed, 1)
+    def color2(self): do_color(ed, 2)
+    def color3(self): do_color(ed, 3)
+    def color4(self): do_color(ed, 4)
+    def color5(self): do_color(ed, 5)
+    def color6(self): do_color(ed, 6)
 
     def format_bold(self):
-        set_text_attribute([TAG_UNIQ, COLOR_NONE, 1, 0, 0, 0, COLOR_NONE])
+        set_text_attribute(ed, [TAG_UNIQ, COLOR_NONE, 1, 0, 0, 0, COLOR_NONE])
+        
     def format_italic(self):
-        set_text_attribute([TAG_UNIQ, COLOR_NONE, 0, 1, 0, 0, COLOR_NONE])
+        set_text_attribute(ed, [TAG_UNIQ, COLOR_NONE, 0, 1, 0, 0, COLOR_NONE])
+        
     def format_strikeout(self):
-        set_text_attribute([TAG_UNIQ, COLOR_NONE, 0, 0, 1, 0, COLOR_NONE])
+        set_text_attribute(ed, [TAG_UNIQ, COLOR_NONE, 0, 0, 1, 0, COLOR_NONE])
 
     def clear_all(self):
-        clear_style(0)
-        clear_style(1)
-        clear_style(2)
-        clear_style(3)
-        clear_style(4)
-        clear_style(5)
-        clear_style(6)
+        clear_style(ed, 0)
+        clear_style(ed, 1)
+        clear_style(ed, 2)
+        clear_style(ed, 3)
+        clear_style(ed, 4)
+        clear_style(ed, 5)
+        clear_style(ed, 6)
 
-    def clear1(self): clear_style(1)
-    def clear2(self): clear_style(2)
-    def clear3(self): clear_style(3)
-    def clear4(self): clear_style(4)
-    def clear5(self): clear_style(5)
-    def clear6(self): clear_style(6)
+    def clear1(self): clear_style(ed, 1)
+    def clear2(self): clear_style(ed, 2)
+    def clear3(self): clear_style(ed, 3)
+    def clear4(self): clear_style(ed, 4)
+    def clear5(self): clear_style(ed, 5)
+    def clear6(self): clear_style(ed, 6)
 
     def config(self):
         file_open(ini)
+
+    def on_open(self, ed_self):
+        load_helper_file(ed_self)
+
+    def on_save(self, ed_self):
+        save_helper_file(ed_self)

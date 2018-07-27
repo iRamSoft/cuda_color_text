@@ -102,3 +102,6 @@ caption=Color Text\Config
 method=config
 menu=o
 
+[item50]
+section=events
+events=on_open,on_save
