@@ -164,6 +164,8 @@ def do_color(ed, n):
 
 
 def clear_style(ed, n):
+
+    ed.set_prop(PROP_MODIFIED, True) # need on_save call
     ed.attr(MARKERS_DELETE_BY_TAG, TAG_UNIQ + n)
 
 
