@@ -168,17 +168,17 @@ def clear_style(ed, n):
 
 
 def load_helper_file(ed):
-    
+
     fn = ed.get_filename()
     if not fn: return
-    
+
     fn_res = fn + HELPER_EXT
     if not os.path.isfile(fn_res):
         return
-        
+
     with open(fn_res, 'r') as f:
         res = json.load(f)
-        
+
     for r in res:
         ed.attr(MARKERS_ADD,
             tag = r['tag'],
@@ -192,29 +192,29 @@ def load_helper_file(ed):
             font_italic = 1 if r['f_i'] else 0,
             font_strikeout = 1 if r['f_s'] else 0,
             )
-            
+
     print('Color Text: restored %d attribs for "%s"' % (len(res), os.path.basename(fn)))
-        
+
 
 def save_helper_file(ed):
 
     fn = ed.get_filename()
     if not fn: return
-    
+
     fn_res = fn + HELPER_EXT
     if os.path.isfile(fn_res):
         os.remove(fn_res)
-    
+
     marks = ed.attr(MARKERS_GET)
     if not marks:
         return
-    
+
     res = []
     for (tag, x, y, len,
       color_font, color_bg, color_border,
       font_bold, font_italic, font_strikeout,
       border_left, border_right, border_down, border_up) in marks:
-        if TAG_UNIQ<=tag<=TAG_MAX: 
+        if TAG_UNIQ<=tag<=TAG_MAX:
             res.append({
                 'tag': tag,
                 'x': x,
@@ -227,13 +227,13 @@ def save_helper_file(ed):
                 'f_i': font_italic!=0,
                 'f_s': font_strikeout!=0,
                 })
-                
+
     if not res:
         return
-      
+
     with open(fn_res, 'w') as f:
         json.dump(res, fp=f, indent=2)
-    
+
 
 class Command:
 
@@ -246,10 +246,10 @@ class Command:
 
     def format_bold(self):
         set_text_attribute(ed, [TAG_UNIQ, COLOR_NONE, 1, 0, 0, 0, COLOR_NONE])
-        
+
     def format_italic(self):
         set_text_attribute(ed, [TAG_UNIQ, COLOR_NONE, 0, 1, 0, 0, COLOR_NONE])
-        
+
     def format_strikeout(self):
         set_text_attribute(ed, [TAG_UNIQ, COLOR_NONE, 0, 0, 1, 0, COLOR_NONE])
 
