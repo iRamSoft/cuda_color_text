@@ -130,13 +130,8 @@ def set_text_attribute(ed, attribs):
             x0, y0, x1, y1 = x1, y1, x0, y0
         set_sel_attribute(ed, [y0, x0], len(word), attribs)
 
-# attribs array:
-#[tag=n, color=COLOR_NONE, bold=0, italic=0, strikeout=0, border=0, color_border=COLOR_NONE]
-
 
 def do_color(ed, n):
-
-    ed.attr(MARKERS_DELETE_BY_TAG, TAG_UNIQ + n)
 
     color        = COLOR_NONE
     color_border = COLOR_NONE
@@ -155,10 +150,10 @@ def do_color(ed, n):
 
     st = ini_read(ini, 'styles', str(n), '')
     if st:
-        if 'b' in st: bold      = 1 #attribs.extend([(ATTRIB_SET_BOLD,0)])
-        if 'i' in st: italic    = 1 #attribs.extend([(ATTRIB_SET_ITALIC,0)])
-        if 'u' in st: border    = 1 #attribs.extend([(ATTRIB_SET_UNDERLINE,0)])
-        if 's' in st: strikeout = 1 #attribs.extend([(ATTRIB_SET_STRIKEOUT,0)])
+        if 'b' in st: bold      = 1
+        if 'i' in st: italic    = 1
+        if 'u' in st: border    = 1
+        if 's' in st: strikeout = 1
 
     set_text_attribute(ed, [TAG_UNIQ + n, color, bold, italic, strikeout, border, color_border])
 
