@@ -1,4 +1,7 @@
 
+2018.07.30
+- fix: could not apply N'th style more than once
+
 2018.07.28
 + add: color attribs are saved to helper file (*.cuda-colortext) and restored on file opening
 
