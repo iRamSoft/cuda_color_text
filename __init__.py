@@ -213,11 +213,11 @@ def clear_in_selection(ed):
     if cnt:
         ed.set_prop(PROP_MODIFIED, True)
 
-    for i in range(TAG_UNIQ, TAG_MAX):
-        ed.attr(MARKERS_DELETE_BY_TAG, tag=i)
+        for i in range(TAG_UNIQ, TAG_MAX):
+            ed.attr(MARKERS_DELETE_BY_TAG, tag=i)
 
-    for m in marks:
-        ed.attr(MARKERS_ADD, *m)
+        for m in marks:
+            ed.attr(MARKERS_ADD, *m)
 
 
 def load_helper_file(ed):
