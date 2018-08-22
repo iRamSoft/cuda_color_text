@@ -182,7 +182,8 @@ def clear_style(ed, n):
     ed.set_prop(PROP_MODIFIED, True) # need on_save call
     ed.attr(MARKERS_DELETE_BY_TAG, TAG_UNIQ + n)
 
-def clear_in_sel(ed):
+
+def clear_in_selection(ed):
 
     carets = ed.get_carets()
     if len(carets)!=1:
@@ -204,11 +205,13 @@ def clear_in_sel(ed):
     cnt = 0
     for i in reversed(range(len(marks))):
         ntag, nx, ny, nlen, *_ = marks[i]
-        if TAG_UNIQ<=ntag<TAG_MAX and (y1, x1)<=(ny, nx)<=(y2, x2):
+        if TAG_UNIQ<=ntag<TAG_MAX and (y1, x1)<=(ny, nx) and (ny, nx+nlen)<=(y2, x2):
             del marks[i]
             cnt += 1
 
     msg_status('Deleted %d attrib(s)'%cnt)
+    if cnt:
+        ed.set_prop(PROP_MODIFIED, True)
 
     for i in range(TAG_UNIQ, TAG_MAX):
         ed.attr(MARKERS_DELETE_BY_TAG, tag=i)
@@ -317,7 +320,7 @@ class Command:
         clear_style(ed, 6)
 
     def clear_sel(self):
-        clear_in_sel(ed)
+        clear_in_selection(ed)
 
     def clear1(self): clear_style(ed, 1)
     def clear2(self): clear_style(ed, 2)
