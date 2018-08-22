@@ -105,7 +105,22 @@ def set_sel_attribute(ed, item, nlen, attribs):
     else:
         fcolor = ed.get_prop(PROP_COLOR, COLOR_ID_TextFont)
 
-    ed.attr(MARKERS_ADD, tag, item[1], item[0], nlen, fcolor, color, color_border, bold, italic, strikeout, b_l, b_r, b_d, b_u,show_on_map=True if opt_show_on_map else False)
+    ed.attr(MARKERS_ADD, tag, 
+        item[1], 
+        item[0], 
+        nlen, 
+        fcolor, 
+        color, 
+        color_border, 
+        bold, 
+        italic, 
+        strikeout, 
+        b_l, 
+        b_r, 
+        b_d, 
+        b_u,
+        show_on_map=opt_show_on_map
+        )
 
 
 def set_text_attribute(ed, attribs):
@@ -189,7 +204,8 @@ def load_helper_file(ed):
             font_bold = 1 if r['f_b'] else 0,
             font_italic = 1 if r['f_i'] else 0,
             font_strikeout = 1 if r['f_s'] else 0,
-            show_on_map = True if opt_show_on_map else False)
+            show_on_map = opt_show_on_map
+            )
 
     print('Color Text: restored %d attribs for "%s"' % (len(res), os.path.basename(fn)))
 

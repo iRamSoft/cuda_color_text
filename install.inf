@@ -3,7 +3,7 @@ title=Color Text
 desc=Allows to colorize text fragments, like function "Style token" in Notepad++
 type=cudatext-plugin
 subdir=cuda_color_text
-api=1.0.214
+api=1.0.253
 homepage=https://github.com/iRamSoft/cuda_color_text/
 
 [item1]
