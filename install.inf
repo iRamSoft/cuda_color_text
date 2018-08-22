@@ -41,67 +41,67 @@ section=commands
 caption=Color Text\-
 method=_
 
-[item8]
+[item20]
 section=commands
 caption=Color Text\Apply bold
 method=format_bold
 
-[item9]
+[item21]
 section=commands
 caption=Color Text\Apply italic
 method=format_italic
 
-[item10]
+[item24]
 section=commands
 caption=Color Text\Apply strikeout
 method=format_strikeout
 
-[item11]
+[item31]
 section=commands
 caption=Color Text\-
 method=_
 
-[item12]
+[item32]
 section=commands
 caption=Color Text\Clear style 1
 method=clear1
 
-[item13]
+[item33]
 section=commands
 caption=Color Text\Clear style 2
 method=clear2
 
-[item14]
+[item34]
 section=commands
 caption=Color Text\Clear style 3
 method=clear3
 
-[item15]
+[item35]
 section=commands
 caption=Color Text\Clear style 4
 method=clear4
 
-[item16]
+[item36]
 section=commands
 caption=Color Text\Clear style 5
 method=clear5
 
-[item17]
+[item37]
 section=commands
 caption=Color Text\Clear style 6
 method=clear6
 
-[item18]
+[item38]
 section=commands
 caption=Color Text\Clear all styles
 method=clear_all
 
-[item20]
+[item60]
 section=commands
 caption=Color Text\Config
 method=config
 menu=o
 
-[item50]
+[item100]
 section=events
 events=on_open,on_save
