@@ -108,19 +108,19 @@ def set_sel_attribute(ed, item, nlen, attribs):
     else:
         fcolor = ed.get_prop(PROP_COLOR, COLOR_ID_TextFont)
 
-    ed.attr(MARKERS_ADD, tag, 
-        item[1], 
-        item[0], 
-        nlen, 
-        fcolor, 
-        color, 
-        color_border, 
-        bold, 
-        italic, 
-        strikeout, 
-        b_l, 
-        b_r, 
-        b_d, 
+    ed.attr(MARKERS_ADD, tag,
+        item[1],
+        item[0],
+        nlen,
+        fcolor,
+        color,
+        color_border,
+        bold,
+        italic,
+        strikeout,
+        b_l,
+        b_r,
+        b_d,
         b_u,
         show_on_map=opt_show_on_map
         )
@@ -181,6 +181,40 @@ def clear_style(ed, n):
 
     ed.set_prop(PROP_MODIFIED, True) # need on_save call
     ed.attr(MARKERS_DELETE_BY_TAG, TAG_UNIQ + n)
+
+def clear_in_sel(ed):
+
+    carets = ed.get_carets()
+    if len(carets)!=1:
+        msg_status('Need single caret')
+        return
+
+    x1, y1, x2, y2 = carets[0]
+    if y2<0:
+        msg_status('No selection')
+        return
+
+    if (y1, x1)>(y2, x2):
+        x1, y1, x2, y2 = x2, y2, x1, y1
+
+    marks = ed.attr(MARKERS_GET)
+    if not marks:
+        return
+
+    cnt = 0
+    for i in reversed(range(len(marks))):
+        ntag, nx, ny, nlen, *_ = marks[i]
+        if TAG_UNIQ<=ntag<TAG_MAX and (y1, x1)<=(ny, nx)<=(y2, x2):
+            del marks[i]
+            cnt += 1
+
+    msg_status('Deleted %d attrib(s)'%cnt)
+
+    for i in range(TAG_UNIQ, TAG_MAX):
+        ed.attr(MARKERS_DELETE_BY_TAG, tag=i)
+
+    for m in marks:
+        ed.attr(MARKERS_ADD, *m)
 
 
 def load_helper_file(ed):
@@ -281,6 +315,9 @@ class Command:
         clear_style(ed, 4)
         clear_style(ed, 5)
         clear_style(ed, 6)
+
+    def clear_sel(self):
+        clear_in_sel(ed)
 
     def clear1(self): clear_style(ed, 1)
     def clear2(self): clear_style(ed, 2)

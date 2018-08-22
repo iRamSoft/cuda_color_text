@@ -101,6 +101,11 @@ section=commands
 caption=Color Text\Clear all styles
 method=clear_all
 
+[item39]
+section=commands
+caption=Color Text\Clear all styles in selection
+method=clear_sel
+
 [item60]
 section=commands
 caption=Color Text\Config
