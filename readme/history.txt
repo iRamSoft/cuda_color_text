@@ -1,4 +1,7 @@
 
+2018.08.22
++ add: command "Apply bold+italic"
+
 2018.07.30
 - fix: could not apply N'th style more than once
 

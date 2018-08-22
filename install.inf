@@ -51,6 +51,11 @@ section=commands
 caption=Color Text\Apply italic
 method=format_italic
 
+[item22]
+section=commands
+caption=Color Text\Apply bold+italic
+method=format_bold_italic
+
 [item24]
 section=commands
 caption=Color Text\Apply strikeout

@@ -267,6 +267,9 @@ class Command:
     def format_italic(self):
         set_text_attribute(ed, [TAG_UNIQ, COLOR_NONE, 0, 1, 0, 0, COLOR_NONE])
 
+    def format_bold_italic(self):
+        set_text_attribute(ed, [TAG_UNIQ, COLOR_NONE, 1, 1, 0, 0, COLOR_NONE])
+
     def format_strikeout(self):
         set_text_attribute(ed, [TAG_UNIQ, COLOR_NONE, 0, 0, 1, 0, COLOR_NONE])
 
