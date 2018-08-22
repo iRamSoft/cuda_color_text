@@ -18,11 +18,14 @@ HELPER_EXT = '.cuda-colortext'
 if os.path.isfile(ini0) and not os.path.isfile(ini):
     shutil.copyfile(ini0, ini)
 
+def str_to_bool(s): return s=='1'
+def bool_to_str(v): return '1' if v else '0'
+
 #-------options
-opt_all_words    = ini_read(ini, 'op', 'all_words'      , '0') == '1'
-opt_whole_words  = ini_read(ini, 'op', 'whole_words'    , '0') == '1'
-opt_case_sens    = ini_read(ini, 'op', 'case_sensitive' , '0') == '1'
-opt_show_on_map  = ini_read(ini, 'op', 'show_on_map'    , '0') == '1'
+opt_all_words    = str_to_bool(ini_read(ini, 'op', 'all_words'      , '0'))
+opt_whole_words  = str_to_bool(ini_read(ini, 'op', 'whole_words'    , '0'))
+opt_case_sens    = str_to_bool(ini_read(ini, 'op', 'case_sensitive' , '0'))
+opt_show_on_map  = str_to_bool(ini_read(ini, 'op', 'show_on_map'    , '0'))
 #-----constants
 TAG_UNIQ   = 4000 # must be unique for all ed.attr() plugins
 TAG_MAX    = TAG_UNIQ + 10
@@ -284,6 +287,11 @@ class Command:
     def clear6(self): clear_style(ed, 6)
 
     def config(self):
+        ini_write(ini, 'op', 'all_words'      , bool_to_str(opt_all_words    ))
+        ini_write(ini, 'op', 'whole_words'    , bool_to_str(opt_whole_words  ))
+        ini_write(ini, 'op', 'case_sensitive' , bool_to_str(opt_case_sens    ))
+        ini_write(ini, 'op', 'show_on_map'    , bool_to_str(opt_show_on_map  ))
+
         file_open(ini)
 
     def on_open(self, ed_self):
