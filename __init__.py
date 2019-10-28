@@ -264,10 +264,8 @@ def save_helper_file(ed):
         return
 
     res = []
-    for (tag, x, y, len,
-      color_font, color_bg, color_border,
-      font_bold, font_italic, font_strikeout,
-      border_left, border_right, border_down, border_up) in marks:
+    for mark in marks:
+        tag, x, y, len, color_font, color_bg, color_border, font_bold, font_italic, font_strikeout = mark[:10]
         if TAG_UNIQ<=tag<=TAG_MAX:
             res.append({
                 'tag': tag,
