@@ -1,19 +1,16 @@
+# coding=utf8
 import os
 import json
 import shutil
 import string
-import unicodedata as ud
 from cudatext import *
 from cudax_lib import html_color_to_int
 
 ini = os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_color_text.ini')
 ini0 = os.path.join(os.path.dirname(__file__), 'styles.sample.ini')
 
-all_unicode = [chr(i) for i in range(0x10000)]
-unicode_letters = ''.join([c for c in all_unicode if ud.category(c) in ('Lu', 'Ll')])
-
-CHARS = string.ascii_letters + string.digits + '_' + unicode_letters
 HELPER_EXT = '.cuda-colortext'
+NONWORD = '''-+*=/\()[]{}<>"'.,:;~?!@#$%^&|`…'''
 
 if os.path.isfile(ini0) and not os.path.isfile(ini):
     shutil.copyfile(ini0, ini)
@@ -33,9 +30,11 @@ TAG_MAX    = TAG_UNIQ + 10
 
 def is_word(s):
 
-    if not s: return False
+    if not s:
+        return False
     for ch in s:
-        if not ch in CHARS: return False
+        if ch in NONWORD:
+            return False
     return True
 
 def get_word(ed, x, y):
