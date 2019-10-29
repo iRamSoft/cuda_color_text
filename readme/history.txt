@@ -1,5 +1,6 @@
 
 2019.10.28
++ faster detect word-chars
 - fix for changed API in CudaText 1.89
 
 2018.08.22
