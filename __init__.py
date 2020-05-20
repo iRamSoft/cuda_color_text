@@ -94,7 +94,7 @@ def do_find_all(ed, text):
     return res
 
 
-def set_sel_attribute(ed, item, nlen, attribs):
+def set_sel_attribute(ed, x0, y0, x1, y1, attribs):
 
     tag, color, bold, italic, strikeout, border, color_border = attribs
 
@@ -108,9 +108,9 @@ def set_sel_attribute(ed, item, nlen, attribs):
         fcolor = ed.get_prop(PROP_COLOR, COLOR_ID_TextFont)
 
     ed.attr(MARKERS_ADD, tag,
-        item[1],
-        item[0],
-        nlen,
+        x0,
+        y0,
+        x1-x0,
         fcolor,
         color,
         color_border,
@@ -138,7 +138,11 @@ def set_text_attribute(ed, attribs):
     if opt_all_words:
         items = do_find_all(ed, word)
         for item in items:
-            set_sel_attribute(ed, item, len(word), attribs)
+            x0 = item[1]
+            y0 = item[0]
+            x1 = x0 + len(word)
+            y1 = y0
+            set_sel_attribute(ed, x0, y0, x1, y1, attribs)
     else:
         carets = ed.get_carets()
         if len(carets)!=1: return
@@ -146,7 +150,9 @@ def set_text_attribute(ed, attribs):
         #sort pairs
         if (y0, x0)>(y1, x1):
             x0, y0, x1, y1 = x1, y1, x0, y0
-        set_sel_attribute(ed, [y0, x0], len(word), attribs)
+        x1 = x0 + len(word)
+        y1 = y0
+        set_sel_attribute(ed, x0, y0, x1, y1, attribs)
 
 
 def do_color(ed, n):
