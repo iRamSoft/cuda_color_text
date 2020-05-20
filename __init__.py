@@ -107,35 +107,96 @@ def set_sel_attribute(ed, x0, y0, x1, y1, attribs):
     else:
         fcolor = ed.get_prop(PROP_COLOR, COLOR_ID_TextFont)
 
-    ed.attr(MARKERS_ADD, tag,
-        x0,
-        y0,
-        x1-x0,
-        fcolor,
-        color,
-        color_border,
-        bold,
-        italic,
-        strikeout,
-        b_l,
-        b_r,
-        b_d,
-        b_u,
-        show_on_map=opt_show_on_map
-        )
+    if y0==y1:
+        ed.attr(MARKERS_ADD, tag,
+            x0,
+            y0,
+            x1-x0,
+            fcolor,
+            color,
+            color_border,
+            bold,
+            italic,
+            strikeout,
+            b_l,
+            b_r,
+            b_d,
+            b_u,
+            show_on_map=opt_show_on_map
+            )
+    else:
+        # multi-line selection: make 3 steps: first line, middle line(s), last line
+        #print('step1')
+        nlen = len(ed.get_text_line(y0))
+        ed.attr(MARKERS_ADD, tag,
+            x0,
+            y0,
+            nlen - x0,
+            fcolor,
+            color,
+            color_border,
+            bold,
+            italic,
+            strikeout,
+            b_l,
+            b_r,
+            b_d,
+            b_u,
+            show_on_map=opt_show_on_map
+            )
+        #print('step2')
+        for y in range(y0+1, y1):
+            nlen = len(ed.get_text_line(y))
+            ed.attr(MARKERS_ADD, tag,
+                0,
+                y,
+                nlen,
+                fcolor,
+                color,
+                color_border,
+                bold,
+                italic,
+                strikeout,
+                b_l,
+                b_r,
+                b_d,
+                b_u,
+                show_on_map=opt_show_on_map
+                )
+        #print('step3')
+        ed.attr(MARKERS_ADD, tag,
+            0,
+            y1,
+            x1,
+            fcolor,
+            color,
+            color_border,
+            bold,
+            italic,
+            strikeout,
+            b_l,
+            b_r,
+            b_d,
+            b_u,
+            show_on_map=opt_show_on_map
+            )
 
 
 def set_text_attribute(ed, attribs):
 
+    x0, y0, x1, y1 = ed.get_carets()[0]
+    is_sel = y1>=0
+
+    if not is_sel:
+        word = _curent_word(ed)
+        if not word:
+            word = ed.get_text_sel()
+        if not word: return
+
     ed.set_prop(PROP_MODIFIED, True)
-    # need on_save call to save helper file
+    # allow on_save call, to save helper file
 
-    word = _curent_word(ed)
-    if not word:
-        word = ed.get_text_sel()
-    if not word: return
-
-    if opt_all_words:
+    if not is_sel and opt_all_words:
         items = do_find_all(ed, word)
         for item in items:
             x0 = item[1]
@@ -150,8 +211,6 @@ def set_text_attribute(ed, attribs):
         #sort pairs
         if (y0, x0)>(y1, x1):
             x0, y0, x1, y1 = x1, y1, x0, y0
-        x1 = x0 + len(word)
-        y1 = y0
         set_sel_attribute(ed, x0, y0, x1, y1, attribs)
 
 

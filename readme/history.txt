@@ -1,4 +1,8 @@
 
+2020.05.20
++ add: support multi-line selections
+* change: ignore option "all_words", when selection is present
+
 2019.10.28
 + faster detect word-chars
 - fix for changed API in CudaText 1.89
