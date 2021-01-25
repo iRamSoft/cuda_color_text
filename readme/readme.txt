@@ -17,6 +17,6 @@ file as "modified", it is Ok, it's needed to save helper file.
 
 
 Authors:
-  Alexey T.
-  Khomutov Roman
+- Alexey Torgashin (CudaText)
+- Khomutov Roman
 License: MIT
