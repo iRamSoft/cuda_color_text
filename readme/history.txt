@@ -1,7 +1,8 @@
 
 2022.04.16
-- fix: few crashes when plugin is called w/o selection
 + add: load plugin options on each 'Apply' command call
+- fix: few crashes when plugin is called w/o selection
+- fix: option "show_on_map=1" did not work
 
 2020.05.20
 + add: support multi-line selections

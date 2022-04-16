@@ -34,6 +34,8 @@ def load_ops():
     opt_case_sens    = str_to_bool(ini_read(ini, 'op', 'case_sensitive' , '0'))
     opt_show_on_map  = str_to_bool(ini_read(ini, 'op', 'show_on_map'    , '0'))
 
+    #print('show_on_map:', opt_show_on_map)
+
 #-----constants
 TAG_UNIQ   = 4000 # must be unique for all ed.attr() plugins
 TAG_MAX    = TAG_UNIQ + 10
@@ -124,7 +126,8 @@ def set_sel_attribute(ed, x0, y0, x1, y1, attribs):
             fcolor, color, color_border,
             bold, italic, strikeout,
             b_l, b_r, b_d, b_u,
-            show_on_map=opt_show_on_map
+            show_on_map = opt_show_on_map,
+            map_only = (2 if opt_show_on_map else 0)
             )
 
     if y0==y1:
@@ -265,6 +268,8 @@ def load_helper_file(ed):
     with open(fn_res, 'r') as f:
         res = json.load(f)
 
+    load_ops()
+
     for r in res:
         ed.attr(MARKERS_ADD,
             tag = r['tag'],
@@ -277,7 +282,8 @@ def load_helper_file(ed):
             font_bold = 1 if r['f_b'] else 0,
             font_italic = 1 if r['f_i'] else 0,
             font_strikeout = 1 if r['f_s'] else 0,
-            show_on_map = opt_show_on_map
+            show_on_map = opt_show_on_map,
+            map_only = (2 if opt_show_on_map else 0)
             )
 
     print('Color Text: restored %d attribs for "%s"' % (len(res), os.path.basename(fn)))
