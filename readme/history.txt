@@ -1,4 +1,8 @@
 
+2022.04.16
+- fix: few crashes when plugin is called w/o selection
++ add: load plugin options on each 'Apply' command call
+
 2020.05.20
 + add: support multi-line selections
 * change: ignore option "all_words", when selection is present

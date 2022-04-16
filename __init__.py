@@ -15,14 +15,25 @@ NONWORD = ''' \t-+*=/\()[]{}<>"'.,:;~?!@#$%^&|`…'''
 if os.path.isfile(ini0) and not os.path.isfile(ini):
     shutil.copyfile(ini0, ini)
 
+opt_all_words = False
+opt_whole_words = False
+opt_case_sens = False
+opt_show_on_map = False
+
 def str_to_bool(s): return s=='1'
 def bool_to_str(v): return '1' if v else '0'
 
-#-------options
-opt_all_words    = str_to_bool(ini_read(ini, 'op', 'all_words'      , '0'))
-opt_whole_words  = str_to_bool(ini_read(ini, 'op', 'whole_words'    , '0'))
-opt_case_sens    = str_to_bool(ini_read(ini, 'op', 'case_sensitive' , '0'))
-opt_show_on_map  = str_to_bool(ini_read(ini, 'op', 'show_on_map'    , '0'))
+def load_ops():
+    global opt_all_words
+    global opt_whole_words
+    global opt_case_sens
+    global opt_show_on_map
+
+    opt_all_words    = str_to_bool(ini_read(ini, 'op', 'all_words'      , '0'))
+    opt_whole_words  = str_to_bool(ini_read(ini, 'op', 'whole_words'    , '0'))
+    opt_case_sens    = str_to_bool(ini_read(ini, 'op', 'case_sensitive' , '0'))
+    opt_show_on_map  = str_to_bool(ini_read(ini, 'op', 'show_on_map'    , '0'))
+
 #-----constants
 TAG_UNIQ   = 4000 # must be unique for all ed.attr() plugins
 TAG_MAX    = TAG_UNIQ + 10
@@ -118,31 +129,39 @@ def set_sel_attribute(ed, x0, y0, x1, y1, attribs):
 
     if y0==y1:
         _put(x0, y0, x1-x0)
-    else:
+    elif y0>=0:
+        cnt = ed.get_line_count()
+        ok = 0<=y0<cnt and 0<=y1<cnt
+        if not ok:
+            return
         # multi-line selection: make 3 steps: first line, middle line(s), last line
-        nlen = len(ed.get_text_line(y0))
+        s = ed.get_text_line(y0)
+        nlen = len(s) if s else 0
         _put(x0, y0, nlen-x0)
         for y in range(y0+1, y1):
-            nlen = len(ed.get_text_line(y))
+            s = ed.get_text_line(y)
+            nlen = len(s) if s else 0
             _put(0, y, nlen)
         _put(0, y1, x1)
 
 
 def set_text_attribute(ed, attribs):
 
-    x0, y0, x1, y1 = ed.get_carets()[0]
+    load_ops()
+
+    carets = ed.get_carets()
+    if not carets:
+        return
+    if len(carets)>1:
+        return msg_status('Color Text: multi-carets are not supported')
+    x0, y0, x1, y1 = carets[0]
     is_sel = y1>=0
 
-    if not is_sel:
+    if not is_sel and opt_all_words:
         word = _curent_word(ed)
         if not word:
-            word = ed.get_text_sel()
-        if not word: return
+            return msg_status('Color Text: need a selection or caret on a word')
 
-    ed.set_prop(PROP_MODIFIED, True)
-    # allow on_save call, to save helper file
-
-    if not is_sel and opt_all_words:
         items = do_find_all(ed, word)
         for item in items:
             x0 = item[1]
@@ -150,14 +169,18 @@ def set_text_attribute(ed, attribs):
             x1 = x0 + len(word)
             y1 = y0
             set_sel_attribute(ed, x0, y0, x1, y1, attribs)
+        msg_status('Color Text: applied attribute to %d fragment(s)'%len(items))
     else:
-        carets = ed.get_carets()
-        if len(carets)!=1: return
-        x0, y0, x1, y1 = carets[0]
+        if not is_sel:
+            return msg_status('Color Text: need a selection or option all_words=1')
         #sort pairs
         if (y0, x0)>(y1, x1):
             x0, y0, x1, y1 = x1, y1, x0, y0
         set_sel_attribute(ed, x0, y0, x1, y1, attribs)
+        msg_status('Color Text: applied attribute to fragment')
+
+    # allow on_save call, to save helper file
+    ed.set_prop(PROP_MODIFIED, True)
 
 
 def do_color(ed, n):
